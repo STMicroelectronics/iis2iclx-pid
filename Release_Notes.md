@@ -38,7 +38,7 @@ This directory contains the IIS2ICLX component drivers.
 
 ### First release
 
-- First official release
+- First official release [ref. DS v5.0]
 
 ##
 
