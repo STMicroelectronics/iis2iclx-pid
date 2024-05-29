@@ -3152,7 +3152,7 @@ typedef struct
   iis2iclx_sensor_hub_18_t  sh_byte_18;
 } iis2iclx_emb_sh_read_t;
 int32_t iis2iclx_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
-                                      iis2iclx_emb_sh_read_t *val);
+                                      iis2iclx_emb_sh_read_t *val, uint16_t len);
 
 typedef enum
 {

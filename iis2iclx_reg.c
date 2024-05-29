@@ -6114,16 +6114,22 @@ int32_t iis2iclx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   *
   */
 int32_t iis2iclx_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
-                                      iis2iclx_emb_sh_read_t *val)
+                                      iis2iclx_emb_sh_read_t *val, uint16_t len)
 {
   int32_t ret;
+
+  /* Check on registers SENSOR_HUB_X range */
+  if (len > 18)
+  {
+    ret = -22; /* -EINVAL */
+    goto exit;
+  }
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
   if (ret == 0)
   {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_SENSOR_HUB_1, (uint8_t *)val,
-                            18);
+    ret = iis2iclx_read_reg(ctx, IIS2ICLX_SENSOR_HUB_1, (uint8_t *)val, len);
   }
 
   if (ret == 0)
@@ -6131,6 +6137,7 @@ int32_t iis2iclx_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
     ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_USER_BANK);
   }
 
+exit:
   return ret;
 }
 
@@ -6837,8 +6844,9 @@ int32_t iis2iclx_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
   {
     slv0_add.slave0 = (uint8_t) val->slv_add >> 1;
     slv0_add.rw_0 = 1;
+
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV0_ADD,
-                             (uint8_t *) & (slv0_add), 1);
+                             (uint8_t*)&slv0_add, 1);
   }
 
   if (ret == 0)
