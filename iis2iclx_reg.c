@@ -6794,7 +6794,7 @@ int32_t iis2iclx_sh_cfg_write(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv0_add.slave0 = (uint8_t)(val->slv0_add >> 1);
+    slv0_add.slave0 = (uint8_t)val->slv0_add;
     slv0_add.rw_0 = 0;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV0_ADD,
                              (uint8_t *) & (slv0_add), 1);
