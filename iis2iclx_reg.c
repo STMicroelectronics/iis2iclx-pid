@@ -5250,8 +5250,6 @@ int32_t iis2iclx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
   if (ret == 0)
   {
     *val = emb_func_en_b.fsm_en;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_EMB_FUNC_EN_B,
-                             (uint8_t *)&emb_func_en_b, 1);
   }
 
   if (ret == 0)
