@@ -1286,63 +1286,7 @@ int32_t iis2iclx_mem_bank_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t add,
                                   uint8_t *val)
 {
-  iis2iclx_page_rw_t page_rw;
-  iis2iclx_page_sel_t page_sel;
-  iis2iclx_page_address_t page_address;
-  int32_t ret;
-
-  ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
-
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x02U; /* page_write enable */
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL, (uint8_t *)&page_sel, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_sel.page_sel = (uint8_t)((add >> 8) & 0x0FU);
-    page_sel.not_used_01 = 1;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
-                             (uint8_t *)&page_sel, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_address.page_addr = (uint8_t)(add & 0xFFU);
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_ADDRESS,
-                             (uint8_t *)&page_address, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_VALUE, val, 1);
-  }
-
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x00; /* page_write disable */
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
-  ret += iis2iclx_mem_bank_set(ctx, IIS2ICLX_USER_BANK);
-
-  return ret;
+  return iis2iclx_ln_pg_write(ctx, add, val, 1);
 }
 
 /**
@@ -1367,87 +1311,66 @@ int32_t iis2iclx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t add,
   uint8_t i ;
   msb = (uint8_t)((add >> 8) & 0x0FU);
   lsb = (uint8_t)(add & 0xFFU);
+
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
+  /* set page write */
+  ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x02U; /* page_write enable*/
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
 
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x02U; /* page_write enable*/
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
+  /* select page */
+  ret += iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+  page_sel.page_sel = msb;
+  page_sel.not_used_01 = 1; // Default value
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
+                           (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL, (uint8_t *)&page_sel, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_sel.page_sel = msb;
-    page_sel.not_used_01 = 1;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
-                             (uint8_t *)&page_sel, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_address.page_addr = lsb;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_ADDRESS,
-                             (uint8_t *)&page_address, 1);
-  }
+  /* set page addr */
+  page_address.page_addr = lsb;
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_ADDRESS,
+                           (uint8_t *)&page_address, 1);
+  if (ret != 0) { goto exit; }
 
   for (i = 0; i < len; i++)
   {
-    if (ret == 0)
+    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_VALUE, &buf[i], 1);
+    if (ret != 0) { goto exit; }
+
+    lsb++;
+
+    /* Check if page wrap */
+    if (lsb == 0x00U)
     {
-      ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_VALUE, &buf[i], 1);
+      msb++;
+      ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL,
+                              (uint8_t *)&page_sel, 1);
+      if (ret != 0) { goto exit; }
 
-      if (ret == 0)
-      {
-        /* Check if page wrap */
-        if (lsb == 0x00U)
-        {
-          msb++;
-          ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL,
-                                  (uint8_t *)&page_sel, 1);
-        }
-
-        lsb++;
-      }
-
-      if (ret == 0)
-      {
-        page_sel.page_sel = msb;
-        page_sel.not_used_01 = 1;
-        ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
-                                 (uint8_t *)&page_sel, 1);
-      }
+      page_sel.page_sel = msb;
+      page_sel.not_used_01 = 1; // Default value
+      ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
+                               (uint8_t *)&page_sel, 1);
+      if (ret != 0) { goto exit; }
     }
   }
 
-  if (ret == 0)
-  {
-    page_sel.page_sel = 0;
-    page_sel.not_used_01 = 1;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
-                             (uint8_t *)&page_sel, 1);
-  }
+  page_sel.page_sel = 0;
+  page_sel.not_used_01 = 1; // Default value
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
+                           (uint8_t *)&page_sel, 1);
 
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
+  /* unset page write */
+  ret += iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x00U; /* page_write disable */
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
 
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x00U; /* page_write disable */
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
+exit:
   ret += iis2iclx_mem_bank_set(ctx, IIS2ICLX_USER_BANK);
 
   return ret;
@@ -1471,54 +1394,40 @@ int32_t iis2iclx_ln_pg_read_byte(const stmdev_ctx_t *ctx, uint16_t add,
   int32_t ret;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
+  if (ret != 0) { return ret; }
 
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
+  /* set page read */
+  ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x01U; /* page_read enable*/
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
 
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x01U; /* page_read enable*/
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
+  /* select page */
+  ret += iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL, (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
+  page_sel.page_sel = (uint8_t)((add >> 8) & 0x0FU);
+  page_sel.not_used_01 = 1; // Default value
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
+                           (uint8_t *)&page_sel, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_SEL, (uint8_t *)&page_sel, 1);
-  }
+  /* set page addr */
+  page_address.page_addr = (uint8_t)(add & 0x00FFU);
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_ADDRESS,
+                           (uint8_t *)&page_address, 1);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    page_sel.page_sel = (uint8_t)((add >> 8) & 0x0FU);
-    page_sel.not_used_01 = 1;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_SEL,
-                             (uint8_t *)&page_sel, 1);
-  }
+  /* read value */
+  ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_VALUE, val, 2);
+  if (ret != 0) { goto exit; }
 
-  if (ret == 0)
-  {
-    page_address.page_addr = (uint8_t)(add & 0x00FFU);
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_ADDRESS,
-                             (uint8_t *)&page_address, 1);
-  }
+  /* unset page read */
+  ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
+  if (ret != 0) { goto exit; }
+  page_rw.page_rw = 0x00U; /* page_read disable */
+  ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
 
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_VALUE, val, 2);
-  }
-
-  if (ret == 0)
-  {
-    ret = iis2iclx_read_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
-  if (ret == 0)
-  {
-    page_rw.page_rw = 0x00U; /* page_read disable */
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
-  }
-
+exit:
   ret += iis2iclx_mem_bank_set(ctx, IIS2ICLX_USER_BANK);
 
   return ret;
