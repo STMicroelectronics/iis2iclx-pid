@@ -30,41 +30,40 @@ This directory contains the IIS2ICLX component drivers.
 # Update history
 
 ::: {.collapse}
-<input type="checkbox" id="collapse-section1" aria-hidden="true">
-<label for="collapse-section1" aria-hidden="true">V1.0.0 / 18-June-2021</label>
+<input type="checkbox" id="collapse-section7" checked aria-hidden="true">
+<label for="collapse-section7" aria-hidden="true">V2.2.1 / 15-Jan-2026</label>
 <div>
 
 ## Main changes
 
-### First release
+- Change bit address representation for sensor-hub from 7 to 8 bit
 
-- First official release [ref. DS v5.0]
+##
+
+</div>
+<input type="checkbox" id="collapse-section6" aria-hidden="true">
+<label for="collapse-section6" aria-hidden="true">V2.2.0 / 07-Oct-2025</label>
+<div>
+
+## Main changes
+
+- Aligned ln_pg_write/read implementations
+- Added checks before writes and membank setting
+- Removed a write in emb_fsm_en_get function
+- Adding CODE_OF_CONDUCT.md and SECURITY.md
 
 ##
 
 </div>
 
-<input type="checkbox" id="collapse-section2" aria-hidden="true">
-<label for="collapse-section2" aria-hidden="true">V1.1.0 / 01-June-2023</label>
+<input type="checkbox" id="collapse-section5" aria-hidden="true">
+<label for="collapse-section5" aria-hidden="true">V2.1.0 / 07-Jul-2025</label>
 <div>
 
 ## Main changes
 
-- Add __weak directive to read/write registers routines
-- Extend stmdev_ctx_t structure with mdelay callback
-- repo name changed adding '-pid' extension
-
-##
-
-</div>
-
-<input type="checkbox" id="collapse-section3" aria-hidden="true">
-<label for="collapse-section3" aria-hidden="true">V2.0.0 / 19-Mar-2024</label>
-<div>
-
-## Main changes
-
-- Add "const" to ctx arg for all APIs
+- Fix driver formatting options
+- Added pointer to private data in stmdev_ctx_t
 
 ##
 
@@ -84,45 +83,46 @@ This directory contains the IIS2ICLX component drivers.
 
 </div>
 
-<input type="checkbox" id="collapse-section5" aria-hidden="true">
-<label for="collapse-section5" aria-hidden="true">V2.1.0 / 07-Jul-2025</label>
+<input type="checkbox" id="collapse-section3" aria-hidden="true">
+<label for="collapse-section3" aria-hidden="true">V2.0.0 / 19-Mar-2024</label>
 <div>
 
 ## Main changes
 
-- Fix driver formatting options
-- Added pointer to private data in stmdev_ctx_t
+- Add "const" to ctx arg for all APIs
 
 ##
 
 </div>
 
-<input type="checkbox" id="collapse-section6" aria-hidden="true">
-<label for="collapse-section6" aria-hidden="true">V2.2.0 / 07-Oct-2025</label>
+<input type="checkbox" id="collapse-section2" aria-hidden="true">
+<label for="collapse-section2" aria-hidden="true">V1.1.0 / 01-June-2023</label>
 <div>
 
 ## Main changes
 
-- Aligned ln_pg_write/read implementations
-- Added checks before writes and membank setting
-- Removed a write in emb_fsm_en_get function
-- Adding CODE_OF_CONDUCT.md and SECURITY.md
+- Add __weak directive to read/write registers routines
+- Extend stmdev_ctx_t structure with mdelay callback
+- repo name changed adding '-pid' extension
 
 ##
 
 </div>
 
-<input type="checkbox" id="collapse-section7" checked aria-hidden="true">
-<label for="collapse-section7" aria-hidden="true">V2.2.1 / 15-Jan-2026</label>
+<input type="checkbox" id="collapse-section1" aria-hidden="true">
+<label for="collapse-section1" aria-hidden="true">V1.0.0 / 18-June-2021</label>
 <div>
 
 ## Main changes
 
-- Change bit address representation for sensor-hub from 7 to 8 bit
+### First release
+
+- First official release [ref. DS v5.0]
 
 ##
 
 </div>
+
 :::
 
 :::
