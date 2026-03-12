@@ -1838,19 +1838,42 @@ int32_t iis2iclx_filter_settling_mask_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
                                        iis2iclx_hp_slope_xl_en_t val)
 {
+  iis2iclx_ctrl1_xl_t ctrl1_xl =  {0};
   iis2iclx_ctrl8_xl_t ctrl8_xl;
   int32_t ret;
+  uint8_t is_high_pass = (((uint8_t)val & 0x10) >> 4) == 1 ? 1 : 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
+  if (ret != 0)
   {
-    ctrl8_xl.hp_slope_xl_en = (((uint8_t)val & 0x10U) >> 4);
-    ctrl8_xl.hp_ref_mode_xl = (((uint8_t)val & 0x20U) >> 5);
-    ctrl8_xl.hpcf_xl = (uint8_t)val & 0x07U;
-    ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL8_XL,
-                             (uint8_t *)&ctrl8_xl, 1);
+    return ret;
   }
+
+  ctrl8_xl.hp_slope_xl_en = is_high_pass;
+  ctrl8_xl.hp_ref_mode_xl = (((uint8_t)val & 0x20U) >> 5);
+  ctrl8_xl.hpcf_xl = (uint8_t)val & 0x07U;
+
+  // low-pass filter
+  if (is_high_pass == 0)
+  {
+    ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL,
+                            (uint8_t *)&ctrl1_xl, 1);
+
+    if (ret != 0)
+    {
+      return ret;
+    }
+
+
+    ctrl1_xl.lpf2_xl_en = ((uint8_t)val & 0x80) >> 7;
+
+    ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL1_XL,
+                            (uint8_t *)&ctrl1_xl, 1);
+  }
+
+  ret += iis2iclx_write_reg(ctx, IIS2ICLX_CTRL8_XL,
+                           (uint8_t *)&ctrl8_xl, 1);
 
   return ret;
 }
@@ -1867,110 +1890,74 @@ int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
                                        iis2iclx_hp_slope_xl_en_t *val)
 {
+  iis2iclx_ctrl1_xl_t ctrl1_xl;
   iis2iclx_ctrl8_xl_t ctrl8_xl;
   int32_t ret;
+  uint8_t is_low_pass = 0;
+
+  ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
+  if (ret != 0) { return ret; }
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   if (ret != 0) { return ret; }
 
-  switch (((ctrl8_xl.hp_ref_mode_xl << 5) + (ctrl8_xl.hp_slope_xl_en <<
-                                             4) +
-           ctrl8_xl.hpcf_xl))
+  if (ctrl8_xl.hp_slope_xl_en == 0 && ctrl1_xl.lpf2_xl_en == 0)
+  {
+    *val = IIS2ICLX_LP_ODR_DIV_2;
+    return ret;
+  }
+
+  is_low_pass = ctrl8_xl.hp_slope_xl_en == 0 ? 1 : 0;
+
+  switch (ctrl8_xl.hpcf_xl)
   {
     case 0x00:
-      *val = IIS2ICLX_HP_PATH_DISABLE_ON_OUT;
-      break;
-
-    case 0x10:
-      *val = IIS2ICLX_SLOPE_ODR_DIV_4;
-      break;
-
-    case 0x11:
-      *val = IIS2ICLX_HP_ODR_DIV_10;
-      break;
-
-    case 0x12:
-      *val = IIS2ICLX_HP_ODR_DIV_20;
-      break;
-
-    case 0x13:
-      *val = IIS2ICLX_HP_ODR_DIV_45;
-      break;
-
-    case 0x14:
-      *val = IIS2ICLX_HP_ODR_DIV_100;
-      break;
-
-    case 0x15:
-      *val = IIS2ICLX_HP_ODR_DIV_200;
-      break;
-
-    case 0x16:
-      *val = IIS2ICLX_HP_ODR_DIV_400;
-      break;
-
-    case 0x17:
-      *val = IIS2ICLX_HP_ODR_DIV_800;
-      break;
-
-    case 0x31:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_10;
-      break;
-
-    case 0x32:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_20;
-      break;
-
-    case 0x33:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_45;
-      break;
-
-    case 0x34:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_100;
-      break;
-
-    case 0x35:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_200;
-      break;
-
-    case 0x36:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_400;
-      break;
-
-    case 0x37:
-      *val = IIS2ICLX_HP_REF_MD_ODR_DIV_800;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
       break;
 
     case 0x01:
-      *val = IIS2ICLX_LP_ODR_DIV_10;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_10 : IIS2ICLX_HP_ODR_DIV_10;
       break;
 
     case 0x02:
-      *val = IIS2ICLX_LP_ODR_DIV_20;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_20 : IIS2ICLX_HP_ODR_DIV_20;
       break;
 
     case 0x03:
-      *val = IIS2ICLX_LP_ODR_DIV_45;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_45 : IIS2ICLX_HP_ODR_DIV_45;
       break;
 
     case 0x04:
-      *val = IIS2ICLX_LP_ODR_DIV_100;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_100 : IIS2ICLX_HP_ODR_DIV_100;
       break;
 
     case 0x05:
-      *val = IIS2ICLX_LP_ODR_DIV_200;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_200 : IIS2ICLX_HP_ODR_DIV_200;
       break;
 
     case 0x06:
-      *val = IIS2ICLX_LP_ODR_DIV_400;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_400 : IIS2ICLX_HP_ODR_DIV_400;
       break;
 
     case 0x07:
-      *val = IIS2ICLX_LP_ODR_DIV_800;
+      if (is_low_pass)
+      {
+        *val = IIS2ICLX_LP_ODR_DIV_800;
+      }
+      else if (ctrl8_xl.hp_ref_mode_xl == 1)
+      {
+        // The application note requires the HPCF_XL field to be set to 111
+        // in order to enable HP_REF_MODE
+        *val = IIS2ICLX_HP_REF_MODE;
+      }
+      else
+      {
+        *val = IIS2ICLX_HP_ODR_DIV_800;
+      }
       break;
 
     default:
-      *val = IIS2ICLX_HP_PATH_DISABLE_ON_OUT;
+      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
       break;
   }
 
