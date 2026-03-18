@@ -30,7 +30,21 @@ This directory contains the IIS2ICLX component drivers.
 # Update history
 
 ::: {.collapse}
-<input type="checkbox" id="collapse-section7" checked aria-hidden="true">
+<input type="checkbox" id="collapse-section8" checked aria-hidden="true">
+<label for="collapse-section8" aria-hidden="true">V2.3.0 / 18-Mar-2026</label>
+<div>
+
+## Main changes
+
+- Fix xl_hp_path_on_out_set/get API and hp_slope_xl_en_t enum
+- Change switch cases to use hex values
+- Re-order update history with most updated on top
+
+##
+
+</div>
+
+<input type="checkbox" id="collapse-section7" aria-hidden="true">
 <label for="collapse-section7" aria-hidden="true">V2.2.1 / 15-Jan-2026</label>
 <div>
 
@@ -41,6 +55,7 @@ This directory contains the IIS2ICLX component drivers.
 ##
 
 </div>
+
 <input type="checkbox" id="collapse-section6" aria-hidden="true">
 <label for="collapse-section6" aria-hidden="true">V2.2.0 / 07-Oct-2025</label>
 <div>
