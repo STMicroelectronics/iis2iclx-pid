@@ -49,7 +49,7 @@ int32_t __weak iis2iclx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   if (ctx == NULL) return -1;
 
@@ -72,7 +72,7 @@ int32_t __weak iis2iclx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                   uint8_t *data,
                                   uint16_t len)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   if (ctx == NULL) return -1;
 
@@ -147,8 +147,8 @@ float_t iis2iclx_from_lsb_to_nsec(int32_t lsb)
 int32_t iis2iclx_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                    iis2iclx_fs_xl_t val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
@@ -173,8 +173,8 @@ int32_t iis2iclx_xl_full_scale_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                    iis2iclx_fs_xl_t *val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   if (ret != 0) { return ret; }
@@ -216,16 +216,16 @@ int32_t iis2iclx_xl_full_scale_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                   iis2iclx_odr_xl_t val)
 {
-  iis2iclx_odr_xl_t odr_xl =  val;
-  iis2iclx_emb_fsm_enable_t fsm_enable;
-  iis2iclx_emb_func_odr_cfg_b_t emb_func_odr_cfg_b;
-  iis2iclx_emb_func_odr_cfg_c_t emb_func_odr_cfg_c;
-  iis2iclx_page_sel_t page_sel;
-  iis2iclx_fsm_odr_t fsm_odr;
-  uint8_t mlc_enable;
-  iis2iclx_mlc_odr_t mlc_odr;
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  int32_t ret;
+  iis2iclx_odr_xl_t odr_xl                          = val;
+  iis2iclx_emb_fsm_enable_t fsm_enable              = {0};
+  iis2iclx_emb_func_odr_cfg_b_t emb_func_odr_cfg_b  = {0};
+  iis2iclx_emb_func_odr_cfg_c_t emb_func_odr_cfg_c  = {0};
+  iis2iclx_page_sel_t page_sel                      = {0};
+  iis2iclx_fsm_odr_t fsm_odr                        = {0};
+  uint8_t mlc_enable                                = 0U;
+  iis2iclx_mlc_odr_t mlc_odr                        = {0};
+  iis2iclx_ctrl1_xl_t ctrl1_xl                      = {0};
+  int32_t ret                                       = 0;
 
   /* Check the Finite State Machine data rate constraints */
   ret =  iis2iclx_fsm_enable_get(ctx, &fsm_enable);
@@ -522,8 +522,8 @@ int32_t iis2iclx_xl_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                   iis2iclx_odr_xl_t *val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   if (ret != 0) { return ret; }
@@ -580,8 +580,8 @@ int32_t iis2iclx_xl_data_rate_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -605,8 +605,8 @@ int32_t iis2iclx_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 int32_t iis2iclx_block_data_update_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -628,8 +628,8 @@ int32_t iis2iclx_block_data_update_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_offset_weight_set(const stmdev_ctx_t *ctx,
                                       iis2iclx_usr_off_w_t val)
 {
-  iis2iclx_ctrl6_c_t ctrl6_c;
-  int32_t ret;
+  iis2iclx_ctrl6_c_t ctrl6_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
@@ -654,8 +654,8 @@ int32_t iis2iclx_xl_offset_weight_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_offset_weight_get(const stmdev_ctx_t *ctx,
                                       iis2iclx_usr_off_w_t *val)
 {
-  iis2iclx_ctrl6_c_t ctrl6_c;
-  int32_t ret;
+  iis2iclx_ctrl6_c_t ctrl6_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
   if (ret != 0) { return ret; }
@@ -691,7 +691,7 @@ int32_t iis2iclx_xl_offset_weight_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_all_sources_get(const stmdev_ctx_t *ctx,
                                  iis2iclx_all_sources_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_ALL_INT_SRC,
                           (uint8_t *)&val->all_int_src, 1);
@@ -759,7 +759,7 @@ int32_t iis2iclx_all_sources_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_status_reg_get(const stmdev_ctx_t *ctx,
                                 iis2iclx_status_reg_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_STATUS_REG, (uint8_t *) val, 1);
 
@@ -777,8 +777,8 @@ int32_t iis2iclx_status_reg_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
-  iis2iclx_status_reg_t status_reg;
-  int32_t ret;
+  iis2iclx_status_reg_t status_reg = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_STATUS_REG,
                           (uint8_t *)&status_reg, 1);
@@ -800,8 +800,8 @@ int32_t iis2iclx_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val)
 {
-  iis2iclx_status_reg_t status_reg;
-  int32_t ret;
+  iis2iclx_status_reg_t status_reg = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_STATUS_REG,
                           (uint8_t *)&status_reg, 1);
@@ -824,7 +824,7 @@ int32_t iis2iclx_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_xl_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_write_reg(ctx, IIS2ICLX_X_OFS_USR, buff, 1);
 
@@ -843,7 +843,7 @@ int32_t iis2iclx_xl_usr_offset_x_set(const stmdev_ctx_t *ctx, uint8_t *buff)
   */
 int32_t iis2iclx_xl_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_X_OFS_USR, buff, 1);
 
@@ -862,7 +862,7 @@ int32_t iis2iclx_xl_usr_offset_x_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   */
 int32_t iis2iclx_xl_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_write_reg(ctx, IIS2ICLX_Y_OFS_USR, buff, 1);
 
@@ -881,7 +881,7 @@ int32_t iis2iclx_xl_usr_offset_y_set(const stmdev_ctx_t *ctx, uint8_t *buff)
   */
 int32_t iis2iclx_xl_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_Y_OFS_USR, buff, 1);
 
@@ -898,8 +898,8 @@ int32_t iis2iclx_xl_usr_offset_y_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   */
 int32_t iis2iclx_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl7_xl_t ctrl7_xl;
-  int32_t ret;
+  iis2iclx_ctrl7_xl_t ctrl7_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL7_XL, (uint8_t *)&ctrl7_xl, 1);
 
@@ -922,8 +922,8 @@ int32_t iis2iclx_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl7_xl_t ctrl7_xl;
-  int32_t ret;
+  iis2iclx_ctrl7_xl_t ctrl7_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL7_XL, (uint8_t *)&ctrl7_xl, 1);
   if (ret != 0) { return ret; }
@@ -956,8 +956,8 @@ int32_t iis2iclx_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl10_c_t ctrl10_c;
-  int32_t ret;
+  iis2iclx_ctrl10_c_t ctrl10_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
@@ -981,8 +981,8 @@ int32_t iis2iclx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl10_c_t ctrl10_c;
-  int32_t ret;
+  iis2iclx_ctrl10_c_t ctrl10_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
   if (ret != 0) { return ret; }
@@ -1004,8 +1004,8 @@ int32_t iis2iclx_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_timestamp_raw_get(const stmdev_ctx_t *ctx, int32_t *val)
 {
-  uint8_t buff[4];
-  int32_t ret;
+  uint8_t buff[4] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TIMESTAMP0, buff, 4);
   if (ret != 0) { return ret; }
@@ -1042,8 +1042,8 @@ int32_t iis2iclx_timestamp_raw_get(const stmdev_ctx_t *ctx, int32_t *val)
   */
 int32_t iis2iclx_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_OUT_TEMP_L, buff, 2);
   if (ret != 0) { return ret; }
@@ -1065,8 +1065,8 @@ int32_t iis2iclx_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   */
 int32_t iis2iclx_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
-  uint8_t buff[4];
-  int32_t ret;
+  uint8_t buff[4] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_OUTX_L_A, buff, 4);
   if (ret != 0) { return ret; }
@@ -1089,7 +1089,7 @@ int32_t iis2iclx_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
   */
 int32_t iis2iclx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_DATA_OUT_X_L, buff, 6);
 
@@ -1118,8 +1118,8 @@ int32_t iis2iclx_fifo_out_raw_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   */
 int32_t iis2iclx_device_conf_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
@@ -1142,8 +1142,8 @@ int32_t iis2iclx_device_conf_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_device_conf_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   if (ret != 0) { return ret; }
@@ -1165,8 +1165,8 @@ int32_t iis2iclx_device_conf_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_odr_cal_reg_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_internal_freq_fine_t internal_freq_fine;
-  int32_t ret;
+  iis2iclx_internal_freq_fine_t internal_freq_fine = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INTERNAL_FREQ_FINE,
                           (uint8_t *)&internal_freq_fine, 1);
@@ -1193,8 +1193,8 @@ int32_t iis2iclx_odr_cal_reg_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_internal_freq_fine_t internal_freq_fine;
-  int32_t ret;
+  iis2iclx_internal_freq_fine_t internal_freq_fine = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INTERNAL_FREQ_FINE,
                           (uint8_t *)&internal_freq_fine, 1);
@@ -1217,8 +1217,8 @@ int32_t iis2iclx_odr_cal_reg_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_mem_bank_set(const stmdev_ctx_t *ctx,
                               iis2iclx_reg_access_t val)
 {
-  iis2iclx_func_cfg_access_t func_cfg_access;
-  int32_t ret;
+  iis2iclx_func_cfg_access_t func_cfg_access = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FUNC_CFG_ACCESS,
                           (uint8_t *)&func_cfg_access, 1);
@@ -1245,8 +1245,8 @@ int32_t iis2iclx_mem_bank_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_mem_bank_get(const stmdev_ctx_t *ctx,
                               iis2iclx_reg_access_t *val)
 {
-  iis2iclx_func_cfg_access_t func_cfg_access;
-  int32_t ret;
+  iis2iclx_func_cfg_access_t func_cfg_access = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FUNC_CFG_ACCESS,
                           (uint8_t *)&func_cfg_access, 1);
@@ -1302,10 +1302,10 @@ int32_t iis2iclx_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t add,
 int32_t iis2iclx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t add,
                              uint8_t *buf, uint8_t len)
 {
-  iis2iclx_page_rw_t page_rw;
-  iis2iclx_page_sel_t page_sel;
-  iis2iclx_page_address_t page_address;
-  int32_t ret;
+  iis2iclx_page_rw_t page_rw = {0};
+  iis2iclx_page_sel_t page_sel = {0};
+  iis2iclx_page_address_t page_address = {0};
+  int32_t ret = 0;
 
   uint8_t msb, lsb;
   uint8_t i ;
@@ -1388,10 +1388,10 @@ exit:
 int32_t iis2iclx_ln_pg_read_byte(const stmdev_ctx_t *ctx, uint16_t add,
                                  uint8_t *val)
 {
-  iis2iclx_page_rw_t page_rw;
-  iis2iclx_page_sel_t page_sel;
-  iis2iclx_page_address_t page_address;
-  int32_t ret;
+  iis2iclx_page_rw_t page_rw = {0};
+  iis2iclx_page_sel_t page_sel = {0};
+  iis2iclx_page_address_t page_address = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
   if (ret != 0) { return ret; }
@@ -1445,8 +1445,8 @@ exit:
 int32_t iis2iclx_data_ready_mode_set(const stmdev_ctx_t *ctx,
                                      iis2iclx_dataready_pulsed_t val)
 {
-  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1;
-  int32_t ret;
+  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                           (uint8_t *)&counter_bdr_reg1, 1);
@@ -1473,8 +1473,8 @@ int32_t iis2iclx_data_ready_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                      iis2iclx_dataready_pulsed_t *val)
 {
-  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1;
-  int32_t ret;
+  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                           (uint8_t *)&counter_bdr_reg1, 1);
@@ -1508,7 +1508,7 @@ int32_t iis2iclx_data_ready_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WHO_AM_I, buff, 1);
 
@@ -1525,8 +1525,8 @@ int32_t iis2iclx_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
   */
 int32_t iis2iclx_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -1549,8 +1549,8 @@ int32_t iis2iclx_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -1571,8 +1571,8 @@ int32_t iis2iclx_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -1596,8 +1596,8 @@ int32_t iis2iclx_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -1617,8 +1617,8 @@ int32_t iis2iclx_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -1641,8 +1641,8 @@ int32_t iis2iclx_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -1665,8 +1665,8 @@ int32_t iis2iclx_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_xl_self_test_set(const stmdev_ctx_t *ctx,
                                   iis2iclx_st_xl_t val)
 {
-  iis2iclx_ctrl5_c_t ctrl5_c;
-  int32_t ret;
+  iis2iclx_ctrl5_c_t ctrl5_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
@@ -1690,8 +1690,8 @@ int32_t iis2iclx_xl_self_test_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_self_test_get(const stmdev_ctx_t *ctx,
                                   iis2iclx_st_xl_t *val)
 {
-  iis2iclx_ctrl5_c_t ctrl5_c;
-  int32_t ret;
+  iis2iclx_ctrl5_c_t ctrl5_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
   if (ret != 0) { return ret; }
@@ -1741,8 +1741,8 @@ int32_t iis2iclx_xl_self_test_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_xl_filter_lp2_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
@@ -1766,8 +1766,8 @@ int32_t iis2iclx_xl_filter_lp2_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_xl_filter_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   if (ret != 0) { return ret; }
@@ -1789,8 +1789,8 @@ int32_t iis2iclx_xl_filter_lp2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_filter_settling_mask_set(const stmdev_ctx_t *ctx,
                                           uint8_t val)
 {
-  iis2iclx_ctrl4_c_t ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl4_c_t ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
@@ -1815,8 +1815,8 @@ int32_t iis2iclx_filter_settling_mask_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_filter_settling_mask_get(const stmdev_ctx_t *ctx,
                                           uint8_t *val)
 {
-  iis2iclx_ctrl4_c_t ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl4_c_t ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   if (ret != 0) { return ret; }
@@ -1838,9 +1838,9 @@ int32_t iis2iclx_filter_settling_mask_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
                                        iis2iclx_hp_slope_xl_en_t val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl =  {0};
-  iis2iclx_ctrl8_xl_t ctrl8_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
+  int32_t ret = 0;
   uint8_t is_high_pass = (((uint8_t)val & 0x10) >> 4) == 1 ? 1 : 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
@@ -1890,9 +1890,9 @@ int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
                                        iis2iclx_hp_slope_xl_en_t *val)
 {
-  iis2iclx_ctrl1_xl_t ctrl1_xl;
-  iis2iclx_ctrl8_xl_t ctrl8_xl;
-  int32_t ret;
+  iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
+  iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
+  int32_t ret = 0;
   uint8_t is_low_pass = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
@@ -1976,8 +1976,8 @@ int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_xl_fast_settling_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl8_xl_t ctrl8_xl;
-  int32_t ret;
+  iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
@@ -2003,8 +2003,8 @@ int32_t iis2iclx_xl_fast_settling_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl8_xl_t ctrl8_xl;
-  int32_t ret;
+  iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   if (ret != 0) { return ret; }
@@ -2026,8 +2026,8 @@ int32_t iis2iclx_xl_fast_settling_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
                                          iis2iclx_slope_fds_t val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
@@ -2053,8 +2053,8 @@ int32_t iis2iclx_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
                                          iis2iclx_slope_fds_t *val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0) { return ret; }
@@ -2101,8 +2101,8 @@ int32_t iis2iclx_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sdo_sa0_mode_set(const stmdev_ctx_t *ctx,
                                   iis2iclx_sdo_pu_en_t val)
 {
-  iis2iclx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  iis2iclx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
 
@@ -2126,8 +2126,8 @@ int32_t iis2iclx_sdo_sa0_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
                                   iis2iclx_sdo_pu_en_t *val)
 {
-  iis2iclx_pin_ctrl_t pin_ctrl;
-  int32_t ret;
+  iis2iclx_pin_ctrl_t pin_ctrl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_PIN_CTRL, (uint8_t *)&pin_ctrl, 1);
   if (ret != 0) { return ret; }
@@ -2160,8 +2160,8 @@ int32_t iis2iclx_sdo_sa0_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_spi_mode_set(const stmdev_ctx_t *ctx, iis2iclx_sim_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -2184,8 +2184,8 @@ int32_t iis2iclx_spi_mode_set(const stmdev_ctx_t *ctx, iis2iclx_sim_t val)
   */
 int32_t iis2iclx_spi_mode_get(const stmdev_ctx_t *ctx, iis2iclx_sim_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -2219,8 +2219,8 @@ int32_t iis2iclx_spi_mode_get(const stmdev_ctx_t *ctx, iis2iclx_sim_t *val)
 int32_t iis2iclx_i2c_interface_set(const stmdev_ctx_t *ctx,
                                    iis2iclx_i2c_disable_t val)
 {
-  iis2iclx_ctrl4_c_t ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl4_c_t ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
@@ -2244,8 +2244,8 @@ int32_t iis2iclx_i2c_interface_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_i2c_interface_get(const stmdev_ctx_t *ctx,
                                    iis2iclx_i2c_disable_t *val)
 {
-  iis2iclx_ctrl4_c_t ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl4_c_t ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   if (ret != 0) { return ret; }
@@ -2293,9 +2293,9 @@ int32_t iis2iclx_i2c_interface_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                     iis2iclx_pin_int1_route_t *val)
 {
-  iis2iclx_pin_int2_route_t pin_int2_route;
-  iis2iclx_tap_cfg2_t tap_cfg2;
-  int32_t ret;
+  iis2iclx_pin_int2_route_t pin_int2_route = {0};
+  iis2iclx_tap_cfg2_t tap_cfg2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -2433,7 +2433,7 @@ int32_t iis2iclx_pin_int1_route_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                     iis2iclx_pin_int1_route_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -2490,9 +2490,9 @@ int32_t iis2iclx_pin_int1_route_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                     iis2iclx_pin_int2_route_t *val)
 {
-  iis2iclx_pin_int1_route_t pin_int1_route;
-  iis2iclx_tap_cfg2_t tap_cfg2;
-  int32_t ret;
+  iis2iclx_pin_int1_route_t pin_int1_route = {0};
+  iis2iclx_tap_cfg2_t tap_cfg2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -2629,7 +2629,7 @@ int32_t iis2iclx_pin_int2_route_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                     iis2iclx_pin_int2_route_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -2684,8 +2684,8 @@ int32_t iis2iclx_pin_int2_route_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_pin_mode_set(const stmdev_ctx_t *ctx, iis2iclx_pp_od_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -2709,8 +2709,8 @@ int32_t iis2iclx_pin_mode_set(const stmdev_ctx_t *ctx, iis2iclx_pp_od_t val)
 int32_t iis2iclx_pin_mode_get(const stmdev_ctx_t *ctx,
                               iis2iclx_pp_od_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -2744,8 +2744,8 @@ int32_t iis2iclx_pin_mode_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_pin_polarity_set(const stmdev_ctx_t *ctx,
                                   iis2iclx_h_lactive_t val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
@@ -2769,8 +2769,8 @@ int32_t iis2iclx_pin_polarity_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_pin_polarity_get(const stmdev_ctx_t *ctx,
                                   iis2iclx_h_lactive_t *val)
 {
-  iis2iclx_ctrl3_c_t ctrl3_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t ctrl3_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   if (ret != 0) { return ret; }
@@ -2803,8 +2803,8 @@ int32_t iis2iclx_pin_polarity_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl4_c_t ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl4_c_t ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
@@ -2827,8 +2827,8 @@ int32_t iis2iclx_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl4_c_t ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl4_c_t ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   if (ret != 0) { return ret; }
@@ -2849,9 +2849,9 @@ int32_t iis2iclx_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_int_notification_set(const stmdev_ctx_t *ctx,
                                       iis2iclx_lir_t val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  iis2iclx_page_rw_t page_rw;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  iis2iclx_page_rw_t page_rw = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
@@ -2895,9 +2895,9 @@ int32_t iis2iclx_int_notification_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_int_notification_get(const stmdev_ctx_t *ctx,
                                       iis2iclx_lir_t *val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  iis2iclx_page_rw_t page_rw;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  iis2iclx_page_rw_t page_rw = {0};
+  int32_t ret = 0;
 
   *val = IIS2ICLX_ALL_INT_PULSED;
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
@@ -2968,8 +2968,8 @@ int32_t iis2iclx_int_notification_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_wkup_ths_weight_set(const stmdev_ctx_t *ctx,
                                      iis2iclx_wake_ths_w_t val)
 {
-  iis2iclx_wake_up_dur_t wake_up_dur;
-  int32_t ret;
+  iis2iclx_wake_up_dur_t wake_up_dur = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_DUR,
                           (uint8_t *)&wake_up_dur, 1);
@@ -2997,8 +2997,8 @@ int32_t iis2iclx_wkup_ths_weight_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
                                      iis2iclx_wake_ths_w_t *val)
 {
-  iis2iclx_wake_up_dur_t wake_up_dur;
-  int32_t ret;
+  iis2iclx_wake_up_dur_t wake_up_dur = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_DUR,
                           (uint8_t *)&wake_up_dur, 1);
@@ -3033,8 +3033,8 @@ int32_t iis2iclx_wkup_ths_weight_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_wake_up_ths_t wake_up_ths;
-  int32_t ret;
+  iis2iclx_wake_up_ths_t wake_up_ths = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_THS,
                           (uint8_t *)&wake_up_ths, 1);
@@ -3060,8 +3060,8 @@ int32_t iis2iclx_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_wake_up_ths_t wake_up_ths;
-  int32_t ret;
+  iis2iclx_wake_up_ths_t wake_up_ths = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_THS,
                           (uint8_t *)&wake_up_ths, 1);
@@ -3083,8 +3083,8 @@ int32_t iis2iclx_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_xl_usr_offset_on_wkup_set(const stmdev_ctx_t *ctx,
                                            uint8_t val)
 {
-  iis2iclx_wake_up_ths_t wake_up_ths;
-  int32_t ret;
+  iis2iclx_wake_up_ths_t wake_up_ths = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_THS,
                           (uint8_t *)&wake_up_ths, 1);
@@ -3110,8 +3110,8 @@ int32_t iis2iclx_xl_usr_offset_on_wkup_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_xl_usr_offset_on_wkup_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val)
 {
-  iis2iclx_wake_up_ths_t wake_up_ths;
-  int32_t ret;
+  iis2iclx_wake_up_ths_t wake_up_ths = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_THS,
                           (uint8_t *)&wake_up_ths, 1);
@@ -3132,8 +3132,8 @@ int32_t iis2iclx_xl_usr_offset_on_wkup_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_wake_up_dur_t wake_up_dur;
-  int32_t ret;
+  iis2iclx_wake_up_dur_t wake_up_dur = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_DUR,
                           (uint8_t *)&wake_up_dur, 1);
@@ -3158,8 +3158,8 @@ int32_t iis2iclx_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_wake_up_dur_t wake_up_dur;
-  int32_t ret;
+  iis2iclx_wake_up_dur_t wake_up_dur = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_DUR,
                           (uint8_t *)&wake_up_dur, 1);
@@ -3196,8 +3196,8 @@ int32_t iis2iclx_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_act_pin_notification_set(const stmdev_ctx_t *ctx,
                                           iis2iclx_sleep_status_on_int_t val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
@@ -3224,8 +3224,8 @@ int32_t iis2iclx_act_pin_notification_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_act_pin_notification_get(const stmdev_ctx_t *ctx,
                                           iis2iclx_sleep_status_on_int_t *val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0) { return ret; }
@@ -3258,8 +3258,8 @@ int32_t iis2iclx_act_pin_notification_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_wake_up_dur_t wake_up_dur;
-  int32_t ret;
+  iis2iclx_wake_up_dur_t wake_up_dur = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_DUR,
                           (uint8_t *)&wake_up_dur, 1);
@@ -3284,8 +3284,8 @@ int32_t iis2iclx_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_wake_up_dur_t wake_up_dur;
-  int32_t ret;
+  iis2iclx_wake_up_dur_t wake_up_dur = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_DUR,
                           (uint8_t *)&wake_up_dur, 1);
@@ -3320,8 +3320,8 @@ int32_t iis2iclx_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_tap_detection_on_y_set(const stmdev_ctx_t *ctx,
                                         uint8_t val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
@@ -3346,8 +3346,8 @@ int32_t iis2iclx_tap_detection_on_y_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0) { return ret; }
@@ -3368,8 +3368,8 @@ int32_t iis2iclx_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_tap_detection_on_x_set(const stmdev_ctx_t *ctx,
                                         uint8_t val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
 
@@ -3394,8 +3394,8 @@ int32_t iis2iclx_tap_detection_on_x_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
-  iis2iclx_tap_cfg0_t tap_cfg0;
-  int32_t ret;
+  iis2iclx_tap_cfg0_t tap_cfg0 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG0, (uint8_t *)&tap_cfg0, 1);
   if (ret != 0) { return ret; }
@@ -3415,8 +3415,8 @@ int32_t iis2iclx_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_tap_cfg1_t tap_cfg1;
-  int32_t ret;
+  iis2iclx_tap_cfg1_t tap_cfg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
 
@@ -3440,8 +3440,8 @@ int32_t iis2iclx_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_tap_cfg1_t tap_cfg1;
-  int32_t ret;
+  iis2iclx_tap_cfg1_t tap_cfg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
   if (ret != 0) { return ret; }
@@ -3462,8 +3462,8 @@ int32_t iis2iclx_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_tap_axis_priority_set(const stmdev_ctx_t *ctx,
                                        iis2iclx_tap_priority_t val)
 {
-  iis2iclx_tap_cfg1_t tap_cfg1;
-  int32_t ret;
+  iis2iclx_tap_cfg1_t tap_cfg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
 
@@ -3487,8 +3487,8 @@ int32_t iis2iclx_tap_axis_priority_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_tap_axis_priority_get(const stmdev_ctx_t *ctx,
                                        iis2iclx_tap_priority_t *val)
 {
-  iis2iclx_tap_cfg1_t tap_cfg1;
-  int32_t ret;
+  iis2iclx_tap_cfg1_t tap_cfg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG1, (uint8_t *)&tap_cfg1, 1);
   if (ret != 0) { return ret; }
@@ -3521,8 +3521,8 @@ int32_t iis2iclx_tap_axis_priority_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_tap_threshold_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_tap_cfg2_t tap_cfg2;
-  int32_t ret;
+  iis2iclx_tap_cfg2_t tap_cfg2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
 
@@ -3546,8 +3546,8 @@ int32_t iis2iclx_tap_threshold_y_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_tap_cfg2_t tap_cfg2;
-  int32_t ret;
+  iis2iclx_tap_cfg2_t tap_cfg2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_TAP_CFG2, (uint8_t *)&tap_cfg2, 1);
   if (ret != 0) { return ret; }
@@ -3571,8 +3571,8 @@ int32_t iis2iclx_tap_threshold_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_int_dur2_t int_dur2;
-  int32_t ret;
+  iis2iclx_int_dur2_t int_dur2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
@@ -3600,8 +3600,8 @@ int32_t iis2iclx_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_int_dur2_t int_dur2;
-  int32_t ret;
+  iis2iclx_int_dur2_t int_dur2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INT_DUR2, (uint8_t *)&int_dur2, 1);
   if (ret != 0) { return ret; }
@@ -3625,8 +3625,8 @@ int32_t iis2iclx_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_int_dur2_t int_dur2;
-  int32_t ret;
+  iis2iclx_int_dur2_t int_dur2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
@@ -3654,8 +3654,8 @@ int32_t iis2iclx_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_int_dur2_t int_dur2;
-  int32_t ret;
+  iis2iclx_int_dur2_t int_dur2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INT_DUR2, (uint8_t *)&int_dur2, 1);
   if (ret != 0) { return ret; }
@@ -3681,8 +3681,8 @@ int32_t iis2iclx_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_int_dur2_t int_dur2;
-  int32_t ret;
+  iis2iclx_int_dur2_t int_dur2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
@@ -3710,8 +3710,8 @@ int32_t iis2iclx_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_int_dur2_t int_dur2;
-  int32_t ret;
+  iis2iclx_int_dur2_t int_dur2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_INT_DUR2, (uint8_t *)&int_dur2, 1);
   if (ret != 0) { return ret; }
@@ -3732,8 +3732,8 @@ int32_t iis2iclx_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_tap_mode_set(const stmdev_ctx_t *ctx,
                               iis2iclx_single_double_tap_t val)
 {
-  iis2iclx_wake_up_ths_t wake_up_ths;
-  int32_t ret;
+  iis2iclx_wake_up_ths_t wake_up_ths = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_THS,
                           (uint8_t *)&wake_up_ths, 1);
@@ -3759,8 +3759,8 @@ int32_t iis2iclx_tap_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_tap_mode_get(const stmdev_ctx_t *ctx,
                               iis2iclx_single_double_tap_t *val)
 {
-  iis2iclx_wake_up_ths_t wake_up_ths;
-  int32_t ret;
+  iis2iclx_wake_up_ths_t wake_up_ths = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_WAKE_UP_THS,
                           (uint8_t *)&wake_up_ths, 1);
@@ -3807,9 +3807,9 @@ int32_t iis2iclx_tap_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
-  iis2iclx_fifo_ctrl1_t fifo_ctrl1;
-  iis2iclx_fifo_ctrl2_t fifo_ctrl2;
-  int32_t ret;
+  iis2iclx_fifo_ctrl1_t fifo_ctrl1 = {0};
+  iis2iclx_fifo_ctrl2_t fifo_ctrl2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL2,
                           (uint8_t *)&fifo_ctrl2, 1);
@@ -3841,9 +3841,9 @@ int32_t iis2iclx_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
   */
 int32_t iis2iclx_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  iis2iclx_fifo_ctrl1_t fifo_ctrl1;
-  iis2iclx_fifo_ctrl2_t fifo_ctrl2;
-  int32_t ret;
+  iis2iclx_fifo_ctrl1_t fifo_ctrl1 = {0};
+  iis2iclx_fifo_ctrl2_t fifo_ctrl2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL2,
                           (uint8_t *)&fifo_ctrl2, 1);
@@ -3871,8 +3871,8 @@ int32_t iis2iclx_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
 int32_t iis2iclx_fifo_virtual_sens_odr_chg_set(const stmdev_ctx_t *ctx,
                                                uint8_t val)
 {
-  iis2iclx_fifo_ctrl2_t fifo_ctrl2;
-  int32_t ret;
+  iis2iclx_fifo_ctrl2_t fifo_ctrl2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL2,
                           (uint8_t *)&fifo_ctrl2, 1);
@@ -3898,8 +3898,8 @@ int32_t iis2iclx_fifo_virtual_sens_odr_chg_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
                                                uint8_t *val)
 {
-  iis2iclx_fifo_ctrl2_t fifo_ctrl2;
-  int32_t ret;
+  iis2iclx_fifo_ctrl2_t fifo_ctrl2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL2,
                           (uint8_t *)&fifo_ctrl2, 1);
@@ -3921,8 +3921,8 @@ int32_t iis2iclx_fifo_virtual_sens_odr_chg_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_fifo_ctrl2_t fifo_ctrl2;
-  int32_t ret;
+  iis2iclx_fifo_ctrl2_t fifo_ctrl2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL2,
                           (uint8_t *)&fifo_ctrl2, 1);
@@ -3948,8 +3948,8 @@ int32_t iis2iclx_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_fifo_ctrl2_t fifo_ctrl2;
-  int32_t ret;
+  iis2iclx_fifo_ctrl2_t fifo_ctrl2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL2,
                           (uint8_t *)&fifo_ctrl2, 1);
@@ -3972,8 +3972,8 @@ int32_t iis2iclx_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
                                    iis2iclx_bdr_xl_t val)
 {
-  iis2iclx_fifo_ctrl3_t fifo_ctrl3;
-  int32_t ret;
+  iis2iclx_fifo_ctrl3_t fifo_ctrl3 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL3,
                           (uint8_t *)&fifo_ctrl3, 1);
@@ -4000,8 +4000,8 @@ int32_t iis2iclx_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
                                    iis2iclx_bdr_xl_t *val)
 {
-  iis2iclx_fifo_ctrl3_t fifo_ctrl3;
-  int32_t ret;
+  iis2iclx_fifo_ctrl3_t fifo_ctrl3 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL3,
                           (uint8_t *)&fifo_ctrl3, 1);
@@ -4064,8 +4064,8 @@ int32_t iis2iclx_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_mode_set(const stmdev_ctx_t *ctx,
                                iis2iclx_fifo_mode_t val)
 {
-  iis2iclx_fifo_ctrl4_t fifo_ctrl4;
-  int32_t ret;
+  iis2iclx_fifo_ctrl4_t fifo_ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL4,
                           (uint8_t *)&fifo_ctrl4, 1);
@@ -4091,8 +4091,8 @@ int32_t iis2iclx_fifo_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_mode_get(const stmdev_ctx_t *ctx,
                                iis2iclx_fifo_mode_t *val)
 {
-  iis2iclx_fifo_ctrl4_t fifo_ctrl4;
-  int32_t ret;
+  iis2iclx_fifo_ctrl4_t fifo_ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL4,
                           (uint8_t *)&fifo_ctrl4, 1);
@@ -4144,8 +4144,8 @@ int32_t iis2iclx_fifo_mode_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
                                      iis2iclx_odr_t_batch_t val)
 {
-  iis2iclx_fifo_ctrl4_t fifo_ctrl4;
-  int32_t ret;
+  iis2iclx_fifo_ctrl4_t fifo_ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL4,
                           (uint8_t *)&fifo_ctrl4, 1);
@@ -4172,8 +4172,8 @@ int32_t iis2iclx_fifo_temp_batch_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
                                      iis2iclx_odr_t_batch_t *val)
 {
-  iis2iclx_fifo_ctrl4_t fifo_ctrl4;
-  int32_t ret;
+  iis2iclx_fifo_ctrl4_t fifo_ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL4,
                           (uint8_t *)&fifo_ctrl4, 1);
@@ -4218,8 +4218,8 @@ int32_t iis2iclx_fifo_temp_batch_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_timestamp_decimation_set(const stmdev_ctx_t *ctx,
                                                iis2iclx_odr_ts_batch_t val)
 {
-  iis2iclx_fifo_ctrl4_t fifo_ctrl4;
-  int32_t ret;
+  iis2iclx_fifo_ctrl4_t fifo_ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL4,
                           (uint8_t *)&fifo_ctrl4, 1);
@@ -4248,8 +4248,8 @@ int32_t iis2iclx_fifo_timestamp_decimation_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
                                                iis2iclx_odr_ts_batch_t *val)
 {
-  iis2iclx_fifo_ctrl4_t fifo_ctrl4;
-  int32_t ret;
+  iis2iclx_fifo_ctrl4_t fifo_ctrl4 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_CTRL4,
                           (uint8_t *)&fifo_ctrl4, 1);
@@ -4292,8 +4292,8 @@ int32_t iis2iclx_fifo_timestamp_decimation_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_rst_batch_counter_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1;
-  int32_t ret;
+  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                           (uint8_t *)&counter_bdr_reg1, 1);
@@ -4320,8 +4320,8 @@ int32_t iis2iclx_rst_batch_counter_set(const stmdev_ctx_t *ctx, uint8_t val)
 int32_t iis2iclx_rst_batch_counter_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
-  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1;
-  int32_t ret;
+  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                           (uint8_t *)&counter_bdr_reg1, 1);
@@ -4344,9 +4344,9 @@ int32_t iis2iclx_rst_batch_counter_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
                                              uint16_t val)
 {
-  iis2iclx_counter_bdr_reg2_t counter_bdr_reg1;
-  iis2iclx_counter_bdr_reg2_t counter_bdr_reg2;
-  int32_t ret;
+  iis2iclx_counter_bdr_reg2_t counter_bdr_reg1 = {0};
+  iis2iclx_counter_bdr_reg2_t counter_bdr_reg2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                           (uint8_t *)&counter_bdr_reg1, 1);
@@ -4380,9 +4380,9 @@ int32_t iis2iclx_batch_counter_threshold_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
                                              uint16_t *val)
 {
-  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1;
-  iis2iclx_counter_bdr_reg2_t counter_bdr_reg2;
-  int32_t ret;
+  iis2iclx_counter_bdr_reg1_t counter_bdr_reg1 = {0};
+  iis2iclx_counter_bdr_reg2_t counter_bdr_reg2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                           (uint8_t *)&counter_bdr_reg1, 1);
@@ -4409,9 +4409,9 @@ int32_t iis2iclx_batch_counter_threshold_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  iis2iclx_fifo_status1_t fifo_status1;
-  iis2iclx_fifo_status2_t fifo_status2;
-  int32_t ret;
+  iis2iclx_fifo_status1_t fifo_status1 = {0};
+  iis2iclx_fifo_status2_t fifo_status2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_STATUS1,
                           (uint8_t *)&fifo_status1, 1);
@@ -4439,7 +4439,7 @@ int32_t iis2iclx_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 int32_t iis2iclx_fifo_status_get(const stmdev_ctx_t *ctx,
                                  iis2iclx_fifo_status2_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_STATUS2, (uint8_t *)val, 1);
 
@@ -4456,8 +4456,8 @@ int32_t iis2iclx_fifo_status_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_fifo_status2_t fifo_status2;
-  int32_t ret;
+  iis2iclx_fifo_status2_t fifo_status2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_STATUS2,
                           (uint8_t *)&fifo_status2, 1);
@@ -4479,8 +4479,8 @@ int32_t iis2iclx_fifo_full_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_fifo_status2_t fifo_status2;
-  int32_t ret;
+  iis2iclx_fifo_status2_t fifo_status2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_STATUS2,
                           (uint8_t *)&fifo_status2, 1);
@@ -4501,8 +4501,8 @@ int32_t iis2iclx_fifo_ovr_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_fifo_status2_t fifo_status2;
-  int32_t ret;
+  iis2iclx_fifo_status2_t fifo_status2 = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_STATUS2,
                           (uint8_t *)&fifo_status2, 1);
@@ -4524,8 +4524,8 @@ int32_t iis2iclx_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
                                      iis2iclx_fifo_tag_t *val)
 {
-  iis2iclx_fifo_data_out_tag_t fifo_data_out_tag;
-  int32_t ret;
+  iis2iclx_fifo_data_out_tag_t fifo_data_out_tag = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_FIFO_DATA_OUT_TAG,
                           (uint8_t *)&fifo_data_out_tag, 1);
@@ -4587,8 +4587,8 @@ int32_t iis2iclx_fifo_sensor_tag_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_sh_batch_slave_0_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_slv0_config_t slv0_config;
-  int32_t ret;
+  iis2iclx_slv0_config_t slv0_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4621,8 +4621,8 @@ int32_t iis2iclx_sh_batch_slave_0_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_sh_batch_slave_0_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_slv0_config_t slv0_config;
-  int32_t ret;
+  iis2iclx_slv0_config_t slv0_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4653,8 +4653,8 @@ int32_t iis2iclx_sh_batch_slave_0_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_sh_batch_slave_1_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_slv1_config_t slv1_config;
-  int32_t ret;
+  iis2iclx_slv1_config_t slv1_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4687,8 +4687,8 @@ int32_t iis2iclx_sh_batch_slave_1_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_sh_batch_slave_1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_slv1_config_t slv1_config;
-  int32_t ret;
+  iis2iclx_slv1_config_t slv1_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4715,8 +4715,8 @@ int32_t iis2iclx_sh_batch_slave_1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_sh_batch_slave_2_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_slv2_config_t slv2_config;
-  int32_t ret;
+  iis2iclx_slv2_config_t slv2_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4749,8 +4749,8 @@ int32_t iis2iclx_sh_batch_slave_2_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_sh_batch_slave_2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_slv2_config_t slv2_config;
-  int32_t ret;
+  iis2iclx_slv2_config_t slv2_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4781,8 +4781,8 @@ int32_t iis2iclx_sh_batch_slave_2_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_sh_batch_slave_3_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_slv3_config_t slv3_config;
-  int32_t ret;
+  iis2iclx_slv3_config_t slv3_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4815,8 +4815,8 @@ int32_t iis2iclx_sh_batch_slave_3_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_sh_batch_slave_3_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_slv3_config_t slv3_config;
-  int32_t ret;
+  iis2iclx_slv3_config_t slv3_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -4859,9 +4859,9 @@ int32_t iis2iclx_sh_batch_slave_3_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_den_mode_set(const stmdev_ctx_t *ctx,
                               iis2iclx_den_mode_t val)
 {
-  iis2iclx_ctrl6_c_t ctrl6_c;
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl6_c_t ctrl6_c = {0};
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
@@ -4897,9 +4897,9 @@ int32_t iis2iclx_den_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_den_mode_get(const stmdev_ctx_t *ctx,
                               iis2iclx_den_mode_t *val)
 {
-  iis2iclx_ctrl6_c_t ctrl6_c;
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl6_c_t ctrl6_c = {0};
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
   ret += iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
@@ -4947,8 +4947,8 @@ int32_t iis2iclx_den_mode_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_den_polarity_set(const stmdev_ctx_t *ctx,
                                   iis2iclx_den_lh_t val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
@@ -4973,8 +4973,8 @@ int32_t iis2iclx_den_polarity_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_den_polarity_get(const stmdev_ctx_t *ctx,
                                   iis2iclx_den_lh_t *val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   if (ret != 0) { return ret; }
@@ -5007,8 +5007,8 @@ int32_t iis2iclx_den_polarity_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_den_mark_axis_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
@@ -5032,8 +5032,8 @@ int32_t iis2iclx_den_mark_axis_y_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   if (ret != 0) { return ret; }
@@ -5053,8 +5053,8 @@ int32_t iis2iclx_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
   */
 int32_t iis2iclx_den_mark_axis_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
@@ -5077,8 +5077,8 @@ int32_t iis2iclx_den_mark_axis_x_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   if (ret != 0) { return ret; }
@@ -5113,8 +5113,8 @@ int32_t iis2iclx_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                               uint8_t *val)
 {
-  iis2iclx_emb_func_status_t emb_func_status;
-  int32_t ret;
+  iis2iclx_emb_func_status_t emb_func_status = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5144,7 +5144,7 @@ int32_t iis2iclx_long_cnt_flag_data_ready_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   iis2iclx_emb_func_en_b_t emb_func_en_b;
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
@@ -5177,9 +5177,9 @@ int32_t iis2iclx_emb_fsm_en_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
-  iis2iclx_emb_func_en_b_t emb_func_en_b;
+  iis2iclx_emb_func_en_b_t emb_func_en_b = {0};
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
   if (ret == 0)
@@ -5209,8 +5209,8 @@ int32_t iis2iclx_emb_fsm_en_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_fsm_enable_set(const stmdev_ctx_t *ctx,
                                 iis2iclx_emb_fsm_enable_t *val)
 {
-  iis2iclx_emb_func_en_b_t emb_func_en_b;
-  int32_t ret;
+  iis2iclx_emb_func_en_b_t emb_func_en_b = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5282,7 +5282,7 @@ int32_t iis2iclx_fsm_enable_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_enable_get(const stmdev_ctx_t *ctx,
                                 iis2iclx_emb_fsm_enable_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5314,8 +5314,8 @@ int32_t iis2iclx_fsm_enable_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5342,8 +5342,8 @@ int32_t iis2iclx_long_cnt_set(const stmdev_ctx_t *ctx, uint16_t val)
   */
 int32_t iis2iclx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5374,8 +5374,8 @@ int32_t iis2iclx_long_cnt_get(const stmdev_ctx_t *ctx, uint16_t *val)
 int32_t iis2iclx_long_clr_set(const stmdev_ctx_t *ctx,
                               iis2iclx_fsm_lc_clr_t val)
 {
-  iis2iclx_fsm_long_counter_clear_t fsm_long_counter_clear;
-  int32_t ret;
+  iis2iclx_fsm_long_counter_clear_t fsm_long_counter_clear = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5408,8 +5408,8 @@ int32_t iis2iclx_long_clr_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_long_clr_get(const stmdev_ctx_t *ctx,
                               iis2iclx_fsm_lc_clr_t *val)
 {
-  iis2iclx_fsm_long_counter_clear_t fsm_long_counter_clear;
-  int32_t ret;
+  iis2iclx_fsm_long_counter_clear_t fsm_long_counter_clear = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5456,7 +5456,7 @@ int32_t iis2iclx_long_clr_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_out_get(const stmdev_ctx_t *ctx,
                              iis2iclx_fsm_out_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5482,8 +5482,8 @@ int32_t iis2iclx_fsm_out_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
                                    iis2iclx_fsm_odr_t val)
 {
-  iis2iclx_emb_func_odr_cfg_b_t emb_func_odr_cfg_b;
-  int32_t ret;
+  iis2iclx_emb_func_odr_cfg_b_t emb_func_odr_cfg_b = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5518,8 +5518,8 @@ int32_t iis2iclx_fsm_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
                                    iis2iclx_fsm_odr_t *val)
 {
-  iis2iclx_emb_func_odr_cfg_b_t emb_func_odr_cfg_b;
-  int32_t ret;
+  iis2iclx_emb_func_odr_cfg_b_t emb_func_odr_cfg_b = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5569,8 +5569,8 @@ int32_t iis2iclx_fsm_data_rate_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_emb_func_init_b_t emb_func_init_b;
-  int32_t ret;
+  iis2iclx_emb_func_init_b_t emb_func_init_b = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5602,8 +5602,8 @@ int32_t iis2iclx_fsm_init_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_emb_func_init_b_t emb_func_init_b;
-  int32_t ret;
+  iis2iclx_emb_func_init_b_t emb_func_init_b = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5637,8 +5637,8 @@ int32_t iis2iclx_fsm_init_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
                                         uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
@@ -5668,8 +5668,8 @@ int32_t iis2iclx_long_cnt_int_value_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
                                         uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_ln_pg_read_byte(ctx, IIS2ICLX_FSM_LC_TIMEOUT_L,
                                  &buff[0]);
@@ -5700,7 +5700,7 @@ int32_t iis2iclx_long_cnt_int_value_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_number_of_programs_set(const stmdev_ctx_t *ctx,
                                             uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_ln_pg_write_byte(ctx, IIS2ICLX_FSM_PROGRAMS, buff);
 
@@ -5724,7 +5724,7 @@ int32_t iis2iclx_fsm_number_of_programs_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_number_of_programs_get(const stmdev_ctx_t *ctx,
                                             uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_ln_pg_read_byte(ctx, IIS2ICLX_FSM_PROGRAMS, buff);
 
@@ -5743,8 +5743,8 @@ int32_t iis2iclx_fsm_number_of_programs_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_start_address_set(const stmdev_ctx_t *ctx,
                                        uint16_t val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   buff[1] = (uint8_t)(val / 256U);
   buff[0] = (uint8_t)(val - (buff[1] * 256U));
@@ -5772,8 +5772,8 @@ int32_t iis2iclx_fsm_start_address_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_fsm_start_address_get(const stmdev_ctx_t *ctx,
                                        uint16_t *val)
 {
-  uint8_t buff[2];
-  int32_t ret;
+  uint8_t buff[2] = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_ln_pg_read_byte(ctx, IIS2ICLX_FSM_START_ADD_L,
                                  &buff[0]);
@@ -5817,8 +5817,8 @@ int32_t iis2iclx_fsm_start_address_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_mlc_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_emb_func_en_b_t reg;
-  int32_t ret;
+  iis2iclx_emb_func_en_b_t reg = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5861,8 +5861,8 @@ int32_t iis2iclx_mlc_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_mlc_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_emb_func_en_b_t reg;
-  int32_t ret;
+  iis2iclx_emb_func_en_b_t reg = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5906,8 +5906,8 @@ int32_t iis2iclx_mlc_status_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
                                    iis2iclx_mlc_odr_t val)
 {
-  iis2iclx_emb_func_odr_cfg_c_t reg;
-  int32_t ret;
+  iis2iclx_emb_func_odr_cfg_c_t reg = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5940,8 +5940,8 @@ int32_t iis2iclx_mlc_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
                                    iis2iclx_mlc_odr_t *val)
 {
-  iis2iclx_emb_func_odr_cfg_c_t reg;
-  int32_t ret;
+  iis2iclx_emb_func_odr_cfg_c_t reg = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -5991,7 +5991,7 @@ int32_t iis2iclx_mlc_data_rate_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_EMBEDDED_FUNC_BANK);
 
@@ -6029,7 +6029,7 @@ int32_t iis2iclx_mlc_out_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 int32_t iis2iclx_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
                                       iis2iclx_emb_sh_read_t *val, uint16_t len)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   /* Check on registers SENSOR_HUB_X range */
   if (len > 18)
@@ -6062,8 +6062,8 @@ exit:
 int32_t iis2iclx_sh_slave_connected_set(const stmdev_ctx_t *ctx,
                                         iis2iclx_aux_sens_on_t val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6096,8 +6096,8 @@ int32_t iis2iclx_sh_slave_connected_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_slave_connected_get(const stmdev_ctx_t *ctx,
                                         iis2iclx_aux_sens_on_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6147,8 +6147,8 @@ int32_t iis2iclx_sh_slave_connected_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6180,8 +6180,8 @@ int32_t iis2iclx_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6212,8 +6212,8 @@ int32_t iis2iclx_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_sh_pin_mode_set(const stmdev_ctx_t *ctx,
                                  iis2iclx_shub_pu_en_t val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6246,8 +6246,8 @@ int32_t iis2iclx_sh_pin_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_pin_mode_get(const stmdev_ctx_t *ctx,
                                  iis2iclx_shub_pu_en_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6289,8 +6289,8 @@ int32_t iis2iclx_sh_pin_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6322,8 +6322,8 @@ int32_t iis2iclx_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
   */
 int32_t iis2iclx_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6354,8 +6354,8 @@ int32_t iis2iclx_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
                                     iis2iclx_start_config_t val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6388,8 +6388,8 @@ int32_t iis2iclx_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
                                     iis2iclx_start_config_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6433,8 +6433,8 @@ int32_t iis2iclx_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_write_mode_set(const stmdev_ctx_t *ctx,
                                    iis2iclx_write_once_t val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6468,8 +6468,8 @@ int32_t iis2iclx_sh_write_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_write_mode_get(const stmdev_ctx_t *ctx,
                                    iis2iclx_write_once_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6510,8 +6510,8 @@ int32_t iis2iclx_sh_write_mode_get(const stmdev_ctx_t *ctx,
   */
 int32_t iis2iclx_sh_reset_set(const stmdev_ctx_t *ctx)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6550,8 +6550,8 @@ int32_t iis2iclx_sh_reset_set(const stmdev_ctx_t *ctx)
   */
 int32_t iis2iclx_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
-  iis2iclx_master_config_t master_config;
-  int32_t ret;
+  iis2iclx_master_config_t master_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6582,8 +6582,8 @@ int32_t iis2iclx_sh_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 int32_t iis2iclx_sh_data_rate_set(const stmdev_ctx_t *ctx,
                                   iis2iclx_shub_odr_t val)
 {
-  iis2iclx_slv0_config_t slv0_config;
-  int32_t ret;
+  iis2iclx_slv0_config_t slv0_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6616,8 +6616,8 @@ int32_t iis2iclx_sh_data_rate_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_data_rate_get(const stmdev_ctx_t *ctx,
                                   iis2iclx_shub_odr_t *val)
 {
-  iis2iclx_slv0_config_t slv0_config;
-  int32_t ret;
+  iis2iclx_slv0_config_t slv0_config = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6671,8 +6671,8 @@ int32_t iis2iclx_sh_data_rate_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_cfg_write(const stmdev_ctx_t *ctx,
                               iis2iclx_sh_cfg_write_t *val)
 {
-  iis2iclx_slv0_add_t slv0_add;
-  int32_t ret;
+  iis2iclx_slv0_add_t slv0_add = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6715,9 +6715,9 @@ int32_t iis2iclx_sh_cfg_write(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
                                   iis2iclx_sh_cfg_read_t *val)
 {
-  iis2iclx_slv0_config_t slv0_config;
-  iis2iclx_slv0_add_t slv0_add;
-  int32_t ret;
+  iis2iclx_slv0_config_t slv0_config = {0};
+  iis2iclx_slv0_add_t slv0_add = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6768,9 +6768,9 @@ int32_t iis2iclx_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
                                   iis2iclx_sh_cfg_read_t *val)
 {
-  iis2iclx_slv1_config_t slv1_config;
-  iis2iclx_slv1_add_t slv1_add;
-  int32_t ret;
+  iis2iclx_slv1_config_t slv1_config = {0};
+  iis2iclx_slv1_add_t slv1_add = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6819,9 +6819,9 @@ int32_t iis2iclx_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
                                   iis2iclx_sh_cfg_read_t *val)
 {
-  iis2iclx_slv2_config_t slv2_config;
-  iis2iclx_slv2_add_t slv2_add;
-  int32_t ret;
+  iis2iclx_slv2_config_t slv2_config = {0};
+  iis2iclx_slv2_add_t slv2_add = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6871,9 +6871,9 @@ int32_t iis2iclx_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
                                   iis2iclx_sh_cfg_read_t *val)
 {
-  iis2iclx_slv3_config_t slv3_config;
-  iis2iclx_slv3_add_t slv3_add;
-  int32_t ret;
+  iis2iclx_slv3_config_t slv3_config = {0};
+  iis2iclx_slv3_add_t slv3_add = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6920,7 +6920,7 @@ int32_t iis2iclx_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_sh_status_get(const stmdev_ctx_t *ctx,
                                iis2iclx_status_master_t *val)
 {
-  int32_t ret;
+  int32_t ret = 0;
 
   ret = iis2iclx_mem_bank_set(ctx, IIS2ICLX_SENSOR_HUB_BANK);
 
@@ -6937,10 +6937,10 @@ int32_t iis2iclx_sh_status_get(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_bus_mode_set(const stmdev_ctx_t *ctx,
                               iis2iclx_bus_mode_t val)
 {
-  iis2iclx_ctrl9_xl_t ctrl9_xl;
-  iis2iclx_ctrl3_c_t  ctrl3_c;
-  iis2iclx_ctrl4_c_t  ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl9_xl_t ctrl9_xl = {0};
+  iis2iclx_ctrl3_c_t  ctrl3_c = {0};
+  iis2iclx_ctrl4_c_t  ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
@@ -6978,9 +6978,9 @@ int32_t iis2iclx_bus_mode_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_bus_mode_get(const stmdev_ctx_t *ctx,
                               iis2iclx_bus_mode_t *val)
 {
-  iis2iclx_ctrl3_c_t  ctrl3_c;
-  iis2iclx_ctrl4_c_t  ctrl4_c;
-  int32_t ret;
+  iis2iclx_ctrl3_c_t  ctrl3_c = {0};
+  iis2iclx_ctrl4_c_t  ctrl4_c = {0};
+  int32_t ret = 0;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   ret += iis2iclx_read_reg(ctx, IIS2ICLX_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
