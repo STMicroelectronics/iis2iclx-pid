@@ -2487,7 +2487,7 @@ int32_t iis2iclx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                           uint8_t *data,
                           uint16_t len);
 int32_t iis2iclx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                           uint8_t *data,
+                           const uint8_t *data,
                            uint16_t len);
 
 float_t iis2iclx_from_fs500mg_to_mg(int16_t lsb);
@@ -2541,26 +2541,6 @@ int32_t iis2iclx_xl_offset_weight_set(const stmdev_ctx_t *ctx,
                                       iis2iclx_usr_off_w_t val);
 int32_t iis2iclx_xl_offset_weight_get(const stmdev_ctx_t *ctx,
                                       iis2iclx_usr_off_w_t *val);
-
-typedef enum
-{
-  IIS2ICLX_HIGH_PERFORMANCE_MD  = 0,
-  IIS2ICLX_LOW_NORMAL_POWER_MD  = 1,
-} iis2iclx_xl_hm_mode_t;
-int32_t iis2iclx_xl_power_mode_set(const stmdev_ctx_t *ctx,
-                                   iis2iclx_xl_hm_mode_t val);
-int32_t iis2iclx_xl_power_mode_get(const stmdev_ctx_t *ctx,
-                                   iis2iclx_xl_hm_mode_t *val);
-
-typedef enum
-{
-  IIS2ICLX_GY_HIGH_PERFORMANCE  = 0,
-  IIS2ICLX_GY_NORMAL            = 1,
-} iis2iclx_g_hm_mode_t;
-int32_t iis2iclx_gy_power_mode_set(const stmdev_ctx_t *ctx,
-                                   iis2iclx_g_hm_mode_t val);
-int32_t iis2iclx_gy_power_mode_get(const stmdev_ctx_t *ctx,
-                                   iis2iclx_g_hm_mode_t *val);
 
 typedef struct
 {
@@ -2627,14 +2607,12 @@ int32_t iis2iclx_mem_bank_set(const stmdev_ctx_t *ctx,
 int32_t iis2iclx_mem_bank_get(const stmdev_ctx_t *ctx,
                               iis2iclx_reg_access_t *val);
 
-int32_t iis2iclx_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t address,
+int32_t iis2iclx_ln_pg_write_byte(const stmdev_ctx_t *ctx, uint16_t add,
                                   uint8_t *val);
-int32_t iis2iclx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t address,
+int32_t iis2iclx_ln_pg_write(const stmdev_ctx_t *ctx, uint16_t add,
                              uint8_t *buf, uint8_t len);
 int32_t iis2iclx_ln_pg_read_byte(const stmdev_ctx_t *ctx, uint16_t add,
                                  uint8_t *val);
-int32_t iis2iclx_ln_pg_read(const stmdev_ctx_t *ctx, uint16_t address,
-                            uint8_t *val);
 
 typedef enum
 {
@@ -3192,7 +3170,7 @@ int32_t iis2iclx_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val);
 typedef enum
 {
   IIS2ICLX_EXT_ON_INT2_PIN = 1,
-  IIS2ICLX_XL_GY_DRDY      = 0,
+  IIS2ICLX_XL_DRDY         = 0,
 } iis2iclx_start_config_t;
 int32_t iis2iclx_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
                                     iis2iclx_start_config_t val);

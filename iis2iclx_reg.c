@@ -51,7 +51,10 @@ int32_t __weak iis2iclx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 {
   int32_t ret = 0;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+      return -1;
+  }
 
   ret = ctx->read_reg(ctx->handle, reg, data, len);
 
@@ -69,12 +72,15 @@ int32_t __weak iis2iclx_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
   *
   */
 int32_t __weak iis2iclx_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
-                                  uint8_t *data,
+                                  const uint8_t *data,
                                   uint16_t len)
 {
   int32_t ret = 0;
 
-  if (ctx == NULL) return -1;
+  if (ctx == NULL)
+  {
+      return -1;
+  }
 
   ret = ctx->write_reg(ctx->handle, reg, data, len);
 
@@ -1838,7 +1844,7 @@ int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
   iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
   iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
   int32_t ret = 0;
-  uint8_t is_high_pass = (((uint8_t)val & 0x10) >> 4) == 1 ? 1 : 0;
+  uint8_t is_high_pass = (((uint8_t)val & 0x10U) >> 4) == 1U ? 1U : 0U;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
@@ -1852,7 +1858,7 @@ int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
   ctrl8_xl.hpcf_xl = (uint8_t)val & 0x07U;
 
   // low-pass filter
-  if (is_high_pass == 0)
+  if (is_high_pass == 0U)
   {
     ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL,
                             (uint8_t *)&ctrl1_xl, 1);
@@ -1890,7 +1896,7 @@ int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
   iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
   iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
   int32_t ret = 0;
-  uint8_t is_low_pass = 0;
+  uint8_t is_low_pass = 0U;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   if (ret != 0) { return ret; }
@@ -1898,50 +1904,50 @@ int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   if (ret != 0) { return ret; }
 
-  if (ctrl8_xl.hp_slope_xl_en == 0 && ctrl1_xl.lpf2_xl_en == 0)
+  if (ctrl8_xl.hp_slope_xl_en == 0U && ctrl1_xl.lpf2_xl_en == 0U)
   {
     *val = IIS2ICLX_LP_ODR_DIV_2;
     return ret;
   }
 
-  is_low_pass = ctrl8_xl.hp_slope_xl_en == 0 ? 1 : 0;
+  is_low_pass = ctrl8_xl.hp_slope_xl_en == 0U ? 1U : 0U;
 
   switch (ctrl8_xl.hpcf_xl)
   {
     case 0x00:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
       break;
 
     case 0x01:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_10 : IIS2ICLX_HP_ODR_DIV_10;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_10 : IIS2ICLX_HP_ODR_DIV_10;
       break;
 
     case 0x02:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_20 : IIS2ICLX_HP_ODR_DIV_20;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_20 : IIS2ICLX_HP_ODR_DIV_20;
       break;
 
     case 0x03:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_45 : IIS2ICLX_HP_ODR_DIV_45;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_45 : IIS2ICLX_HP_ODR_DIV_45;
       break;
 
     case 0x04:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_100 : IIS2ICLX_HP_ODR_DIV_100;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_100 : IIS2ICLX_HP_ODR_DIV_100;
       break;
 
     case 0x05:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_200 : IIS2ICLX_HP_ODR_DIV_200;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_200 : IIS2ICLX_HP_ODR_DIV_200;
       break;
 
     case 0x06:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_400 : IIS2ICLX_HP_ODR_DIV_400;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_400 : IIS2ICLX_HP_ODR_DIV_400;
       break;
 
     case 0x07:
-      if (is_low_pass)
+      if (is_low_pass == 1U)
       {
         *val = IIS2ICLX_LP_ODR_DIV_800;
       }
-      else if (ctrl8_xl.hp_ref_mode_xl == 1)
+      else if (ctrl8_xl.hp_ref_mode_xl == 1U)
       {
         // The application note requires the HPCF_XL field to be set to 111
         // in order to enable HP_REF_MODE
@@ -1954,7 +1960,7 @@ int32_t iis2iclx_xl_hp_path_on_out_get(const stmdev_ctx_t *ctx,
       break;
 
     default:
-      *val = is_low_pass ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
+      *val = is_low_pass == 1U ? IIS2ICLX_LP_ODR_DIV_4 : IIS2ICLX_SLOPE_ODR_DIV_4;
       break;
   }
 
@@ -4009,7 +4015,7 @@ int32_t iis2iclx_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
       *val = IIS2ICLX_XL_NOT_BATCHED;
       break;
 
-    case 0x11:
+    case 0x0B:
       *val = IIS2ICLX_XL_BATCHED_AT_1Hz6;
       break;
 
@@ -6023,7 +6029,7 @@ int32_t iis2iclx_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
   int32_t ret = 0;
 
   /* Check on registers SENSOR_HUB_X range */
-  if (len > 18)
+  if (len > 18U)
   {
     ret = -22; /* -EINVAL */
     goto exit;
@@ -6401,7 +6407,7 @@ int32_t iis2iclx_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
       break;
 
     case 0x00:
-      *val = IIS2ICLX_XL_GY_DRDY;
+      *val = IIS2ICLX_XL_DRDY;
       break;
 
     default:
