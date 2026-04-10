@@ -160,7 +160,7 @@ int32_t iis2iclx_xl_full_scale_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ctrl1_xl.fs_xl = (uint8_t)(val & 0x03);
+    ctrl1_xl.fs_xl = (uint8_t)val & 0x03U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL1_XL,
                              (uint8_t *)&ctrl1_xl, 1);
   }
@@ -593,7 +593,7 @@ int32_t iis2iclx_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl3_c.bdu = (uint8_t)(val & 0x01);
+    ctrl3_c.bdu = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
 
@@ -641,7 +641,7 @@ int32_t iis2iclx_xl_offset_weight_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ctrl6_c.usr_off_w = (uint8_t)(val & 0x01);
+    ctrl6_c.usr_off_w = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
   }
 
@@ -911,7 +911,7 @@ int32_t iis2iclx_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl7_xl.usr_off_on_out = (uint8_t)(val & 0x01);
+    ctrl7_xl.usr_off_on_out = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL7_XL, (uint8_t *)&ctrl7_xl, 1);
   }
 
@@ -969,7 +969,7 @@ int32_t iis2iclx_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl10_c.timestamp_en = (uint8_t)(val & 0x01);
+    ctrl10_c.timestamp_en = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL10_C,
                              (uint8_t *)&ctrl10_c, 1);
   }
@@ -1128,7 +1128,7 @@ int32_t iis2iclx_device_conf_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl9_xl.device_conf = (uint8_t)(val & 0x01);
+    ctrl9_xl.device_conf = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   }
 
@@ -1228,7 +1228,7 @@ int32_t iis2iclx_mem_bank_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    func_cfg_access.reg_access = (uint8_t)((uint8_t)val & 0x03);
+    func_cfg_access.reg_access = (uint8_t)val & 0x03U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_FUNC_CFG_ACCESS,
                              (uint8_t *)&func_cfg_access, 1);
   }
@@ -1456,7 +1456,7 @@ int32_t iis2iclx_data_ready_mode_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    counter_bdr_reg1.dataready_pulsed = (uint8_t)(val & 0x01);
+    counter_bdr_reg1.dataready_pulsed = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_COUNTER_BDR_REG1,
                              (uint8_t *)&counter_bdr_reg1, 1);
   }
@@ -1535,7 +1535,7 @@ int32_t iis2iclx_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl3_c.sw_reset = (uint8_t)(val & 0x01);
+    ctrl3_c.sw_reset = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
 
@@ -1581,7 +1581,7 @@ int32_t iis2iclx_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl3_c.if_inc = (uint8_t)(val & 0x01);
+    ctrl3_c.if_inc = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
 
@@ -1627,7 +1627,7 @@ int32_t iis2iclx_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl3_c.boot = (uint8_t)(val & 0x01);
+    ctrl3_c.boot = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
 
@@ -1675,7 +1675,7 @@ int32_t iis2iclx_xl_self_test_set(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    ctrl5_c.st_xl = (uint8_t)(val & 0x03);
+    ctrl5_c.st_xl = (uint8_t)val & 0x03U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
   }
 
@@ -1751,7 +1751,7 @@ int32_t iis2iclx_xl_filter_lp2_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   if (ret == 0)
   {
-    ctrl1_xl.lpf2_xl_en = (uint8_t)(val & 0x01);
+    ctrl1_xl.lpf2_xl_en = (uint8_t)val & 0x01U;
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_CTRL1_XL,
                              (uint8_t *)&ctrl1_xl, 1);
   }
@@ -1844,7 +1844,7 @@ int32_t iis2iclx_xl_hp_path_on_out_set(const stmdev_ctx_t *ctx,
   iis2iclx_ctrl1_xl_t ctrl1_xl = {0};
   iis2iclx_ctrl8_xl_t ctrl8_xl = {0};
   int32_t ret = 0;
-  uint8_t is_high_pass = (((uint8_t)val & 0x10U) >> 4) == 1U ? 1U : 0U;
+  uint8_t is_high_pass = (((uint8_t)val >> 4) & 0x01U) == 1U ? 1U : 0U;
 
   ret = iis2iclx_read_reg(ctx, IIS2ICLX_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
@@ -2877,7 +2877,7 @@ int32_t iis2iclx_int_notification_set(const stmdev_ctx_t *ctx,
 
     if (ret == 0)
     {
-      page_rw.emb_func_lir = ((uint8_t)val & 0x02U) >> 1;
+      page_rw.emb_func_lir = ((uint8_t)val >> 1) & 0x01U;
       ret = iis2iclx_write_reg(ctx, IIS2ICLX_PAGE_RW, (uint8_t *)&page_rw, 1);
     }
 
@@ -6741,7 +6741,7 @@ int32_t iis2iclx_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv0_config.slave0_numop = (uint8_t)(val->slv_len & 0x07);
+    slv0_config.slave0_numop = (uint8_t)(val->slv_len & 0x07U);
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV0_CONFIG,
                              (uint8_t *)&slv0_config, 1);
   }
@@ -6792,7 +6792,7 @@ int32_t iis2iclx_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv1_config.slave1_numop = (uint8_t)(val->slv_len & 0x07);
+    slv1_config.slave1_numop = (uint8_t)(val->slv_len & 0x07U);
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV1_CONFIG,
                              (uint8_t *)&slv1_config, 1);
   }
@@ -6844,7 +6844,7 @@ int32_t iis2iclx_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv2_config.slave2_numop = (uint8_t)(val->slv_len & 0x07);
+    slv2_config.slave2_numop = (uint8_t)(val->slv_len & 0x07U);
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV2_CONFIG,
                              (uint8_t *)&slv2_config, 1);
   }
@@ -6896,7 +6896,7 @@ int32_t iis2iclx_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
 
   if (ret == 0)
   {
-    slv3_config.slave3_numop = (uint8_t)(val->slv_len & 0x07);
+    slv3_config.slave3_numop = (uint8_t)(val->slv_len & 0x07U);
     ret = iis2iclx_write_reg(ctx, IIS2ICLX_SLV3_CONFIG,
                              (uint8_t *)&slv3_config, 1);
   }
